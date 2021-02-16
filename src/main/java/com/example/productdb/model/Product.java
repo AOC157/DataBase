@@ -2,11 +2,13 @@ package com.example.productdb.model;
 
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class Product {
 
+    @GeneratedValue
     @Id
     private int id;
     private String name;
@@ -15,10 +17,8 @@ public class Product {
     private String dateOfManufacture;
     private String expirationDate;
 
-    public static int productNumber = 0;
 
     public Product(String name, String color, double price, String dateOfManufacture, String expirationDate) {
-        this();
         this.name = name;
         this.color = color;
         this.price = price;
@@ -27,7 +27,6 @@ public class Product {
     }
 
     public Product(){
-        id = ++productNumber;
     }
 
     public int getId() {
