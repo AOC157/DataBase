@@ -75,13 +75,13 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", color='" + color + '\'' +
-                ", price=" + price +
-                ", dateOfManufacture=" + dateOfManufacture +
-                ", expirationDate=" + expirationDate +
+        return "{" +
+                "\"id\":" + id +
+                ", \"name\":\"" + name + '\"' +
+                ", \"color\":'" + color + '\"' +
+                ", \"price\":" + price +
+                ", \"dateOfManufacture\":\"" + dateOfManufacture + '\"' +
+                ", \"expirationDate\":\"" + expirationDate + "\"" +
                 '}';
     }
 
