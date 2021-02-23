@@ -14,14 +14,13 @@ public class ProductController {
 
 
     @RequestMapping(value = "/" , method = RequestMethod.POST , consumes = "application/json")
-    public String productPostRequest(@RequestBody Product product){
+    public String productPostRequest(Product product){
         productRepository.save(product);
 
         return product.toString();
     }
 
     @GetMapping(value = "/" ,produces = "application/json")
-    @ResponseBody
     public HttpEntity<Product> productGetRequest(){
         Product product = new Product("pen" , "red" , 5000.0 , "1399.09.30" , "");
 
