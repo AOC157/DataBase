@@ -80,8 +80,8 @@ public class Product {
                 ", \"name\":\"" + name + '\"' +
                 ", \"color\":'" + color + '\"' +
                 ", \"price\":" + price +
-                ", \"dateOfManufacture\":\"" + dateOfManufacture + '\"' +
-                ", \"expirationDate\":\"" + expirationDate + "\"" +
+                ", \"date_of_manufacture\":\"" + dateOfManufacture + '\"' +
+                ", \"expiration_date\":\"" + expirationDate + "\"" +
                 '}';
     }
 
