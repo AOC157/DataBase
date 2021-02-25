@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ProductController {
 
@@ -13,17 +15,35 @@ public class ProductController {
     public ProductRepository productRepository;
 
 
-    @RequestMapping(value = "/" , method = RequestMethod.POST , consumes = "application/json")
-    public String productPostRequest(Product product){
+    @PostMapping(value = "/insertProduct")
+    public String insertProduct(@RequestBody Product product){
         productRepository.save(product);
-
         return product.toString();
     }
 
-    @GetMapping(value = "/" ,produces = "application/json")
-    public HttpEntity<Product> productGetRequest(){
-        Product product = new Product("pen" , "red" , 5000.0 , "1399.09.30" , "");
+    @GetMapping(value = "/productList")
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
 
-        return new HttpEntity<>(product);
+    @GetMapping(value = "/oneProduct/{id}")
+    public Product getOneProduct(@PathVariable("id") int id) {
+        return productRepository.getOne(id);
+    }
+
+    @PutMapping(value = "/updateProduct")
+    public void updateProduct(@RequestBody Product product) {
+        Product productFromDB = productRepository.getOne(product.getId());
+        productFromDB.setName(product.getName());
+        productFromDB.setColor(product.getColor());
+        productFromDB.setPrice(product.getPrice());
+        productFromDB.setExpirationDate(product.getExpirationDate());
+        productFromDB.setDateOfManufacture(product.getDateOfManufacture());
+        productRepository.save(productFromDB);
+    }
+
+    @DeleteMapping(value = "/deleteProduct/{id}")
+    public void deleteProduct(@PathVariable("id") int id) {
+        productRepository.deleteById(id);
     }
 }
