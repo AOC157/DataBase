@@ -37,8 +37,8 @@ public class ProductController {
         productFromDB.setName(product.getName());
         productFromDB.setColor(product.getColor());
         productFromDB.setPrice(product.getPrice());
-        productFromDB.setExpirationDate(product.getExpirationDate());
-        productFromDB.setDateOfManufacture(product.getDateOfManufacture());
+        productFromDB.setExpiration_date(product.getExpiration_date());
+        productFromDB.setDate_of_manufacture(product.getDate_of_manufacture());
         productRepository.save(productFromDB);
     }
 
