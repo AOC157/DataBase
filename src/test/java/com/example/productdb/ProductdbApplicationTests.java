@@ -8,22 +8,25 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import static junit.framework.Assert.assertEquals;
+import java.util.Arrays;
+import java.util.List;
+
+import static javax.management.Query.value;
+import static net.bytebuddy.matcher.ElementMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.web.servlet.function.RequestPredicates.contentType;
 
 
@@ -31,47 +34,43 @@ import static org.springframework.web.servlet.function.RequestPredicates.content
 @WebMvcTest(ProductController.class)
 class ProductdbApplicationTests {
 
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
-
     @MockBean
     private ProductRepository productRepository;
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Before
-    public void setup(){
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
-
 
     @Test
     void contextLoads() {
     }
 
+
     @Test
-    public void getOne() {
-        Product created = new Product("cake", "black", 5000.0, "1399.12.05", "1400.12.05");
-        when(productRepository.getOne(created.getId())).thenReturn(created);
+    public void findAllTest() throws Exception {
+        Product product1 = new Product("cake" , "black" , 5000.0, "1399.12.11" , "1400.12.11");
+        Product product2 = new Product("cookie" , "brown" , 7000.0, "1399.10.00" , "1400.10.00");
 
-        Product returned = productRepository.getOne(created.getId());
+        List<Product> allProducts = Arrays.asList(product1, product2);
 
-        assertEquals(created, returned);
+        given(productRepository.findAll()).willReturn(allProducts);
+
+        mockMvc.perform(get("/productList")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(2)))
+            .andExpect(jsonPath("$[0].name").value(product1.getName()));
     }
 
     @Test
-    public void create() {
-        Product created = new Product("cake", "black", 5000.0, "1399.12.05", "1400.12.05");
+    public void getOneTest() throws Exception {
+        Product product = new Product("cake" , "black" , 5000.0, "1399.12.11" , "1400.12.11");
 
-        when(productRepository.save(any(Product.class))).thenReturn(created);
+        given(productRepository.getOne(product.getId())).willReturn(product);
 
-        Product returned = productRepository.save(created);
-
-        assertEquals(created, returned);
+        mockMvc.perform(get("/oneProduct/" + product.getId())
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.name"). value(product.getName()));
     }
-
-
 }
