@@ -33,13 +33,9 @@ public class ProductController {
 
     @PutMapping(value = "/updateProduct")
     public void updateProduct(@RequestBody Product product) {
-        Product productFromDB = productRepository.getOne(product.getId());
-        productFromDB.setName(product.getName());
-        productFromDB.setColor(product.getColor());
-        productFromDB.setPrice(product.getPrice());
-        productFromDB.setExpiration_date(product.getExpiration_date());
-        productFromDB.setDate_of_manufacture(product.getDate_of_manufacture());
-        productRepository.save(productFromDB);
+        if(productRepository.existsById(product.getId())) {
+            productRepository.save(product);
+        }
     }
 
     @DeleteMapping(value = "/deleteProduct/{id}")
