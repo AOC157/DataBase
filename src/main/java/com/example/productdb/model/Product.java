@@ -14,16 +14,16 @@ public class Product {
     private String name;
     private String color;
     private double price;
-    private String dateOfManufacture;
-    private String expirationDate;
+    private String date_of_manufacture;
+    private String expiration_date;
 
 
-    public Product(String name, String color, double price, String dateOfManufacture, String expirationDate) {
+    public Product(String name, String color, double price, String date_of_manufacture, String expiration_date) {
         this.name = name;
         this.color = color;
         this.price = price;
-        this.dateOfManufacture = dateOfManufacture;
-        this.expirationDate = expirationDate;
+        this.date_of_manufacture = date_of_manufacture;
+        this.expiration_date = expiration_date;
     }
 
     public Product(){
@@ -33,20 +33,20 @@ public class Product {
         return id;
     }
 
-    public String getDateOfManufacture() {
-        return dateOfManufacture;
+    public String getDate_of_manufacture() {
+        return date_of_manufacture;
     }
 
-    public void setDateOfManufacture(String dateOfManufacture) {
-        this.dateOfManufacture = dateOfManufacture;
+    public void setDate_of_manufacture(String date_of_manufacture) {
+        this.date_of_manufacture = date_of_manufacture;
     }
 
-    public String getExpirationDate() {
-        return expirationDate;
+    public String getExpiration_date() {
+        return expiration_date;
     }
 
-    public void setExpirationDate(String expirationDate) {
-        this.expirationDate = expirationDate;
+    public void setExpiration_date(String expiration_date) {
+        this.expiration_date = expiration_date;
     }
 
     public String getName() {
@@ -78,10 +78,10 @@ public class Product {
         return "{" +
                 "\"id\":" + id +
                 ", \"name\":\"" + name + '\"' +
-                ", \"color\":'" + color + '\"' +
+                ", \"color\":\"" + color + '\"' +
                 ", \"price\":" + price +
-                ", \"date_of_manufacture\":\"" + dateOfManufacture + '\"' +
-                ", \"expiration_date\":\"" + expirationDate + "\"" +
+                ", \"date_of_manufacture\":\"" + date_of_manufacture + '\"' +
+                ", \"expiration_date\":\"" + expiration_date + "\"" +
                 '}';
     }
 
