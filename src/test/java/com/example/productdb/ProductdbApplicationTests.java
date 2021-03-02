@@ -88,4 +88,17 @@ class ProductdbApplicationTests {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name"). value(product.getName()));
     }
+
+    @Test
+    public void insertTest() throws Exception {
+        Product product = new Product("cake" , "black" , 5000.0, "1399.12.11" , "1400.12.11");
+
+        String jsonProduct = product.toString();
+
+        mockMvc.perform(post("/insertProduct")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(jsonProduct))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.name"). value(product.getName()));
+    }
 }
