@@ -3,6 +3,7 @@ package com.example.productdb;
 import com.example.productdb.controller.ProductController;
 import com.example.productdb.model.Product;
 import com.example.productdb.repository.ProductRepository;
+import org.hibernate.ObjectNotFoundException;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -23,8 +24,8 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.web.servlet.function.RequestPredicates.contentType;
@@ -67,8 +68,22 @@ class ProductdbApplicationTests {
         Product product = new Product("cake" , "black" , 5000.0, "1399.12.11" , "1400.12.11");
 
         given(productRepository.getOne(product.getId())).willReturn(product);
+        given(productRepository.existsById(product.getId())).willReturn(true);
 
         mockMvc.perform(get("/oneProduct/" + product.getId())
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.name"). value(product.getName()));
+    }
+
+    @Test
+    public void deleteTest() throws Exception {
+        Product product = new Product("cake" , "black" , 5000.0, "1399.12.11" , "1400.12.11");
+
+        given(productRepository.existsById(product.getId())).willReturn(true);
+        given(productRepository.getOne(product.getId())).willReturn(product);
+
+        mockMvc.perform(delete("/deleteProduct/" + product.getId())
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name"). value(product.getName()));
