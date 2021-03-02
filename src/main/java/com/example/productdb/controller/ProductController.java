@@ -2,6 +2,7 @@ package com.example.productdb.controller;
 
 import com.example.productdb.model.Product;
 import com.example.productdb.repository.ProductRepository;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,11 @@ public class ProductController {
     }
 
     @GetMapping(value = "/oneProduct/{id}")
-    public Product getOneProduct(@PathVariable("id") int id) {
-        return productRepository.getOne(id);
+    public String getOneProduct(@PathVariable("id") int id) {
+        if(productRepository.existsById(id)) {
+            return productRepository.getOne(id).toString();
+        }
+        throw new ObjectNotFoundException("doesn't exist" , Integer.toString(id));
     }
 
     @PutMapping(value = "/updateProduct")
