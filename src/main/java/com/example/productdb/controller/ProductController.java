@@ -43,7 +43,12 @@ public class ProductController {
     }
 
     @DeleteMapping(value = "/deleteProduct/{id}")
-    public void deleteProduct(@PathVariable("id") int id) {
-        productRepository.deleteById(id);
+    public String deleteProduct(@PathVariable("id") int id) {
+        if (productRepository.existsById(id)) {
+            String result = productRepository.getOne(id).toString();
+            productRepository.deleteById(id);
+            return result;
+        }
+        throw new ObjectNotFoundException("doesn't exist" , Integer.toString(id));
     }
 }
