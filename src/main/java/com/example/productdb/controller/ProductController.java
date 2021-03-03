@@ -5,11 +5,16 @@ import com.example.productdb.repository.ProductRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@Validated
 public class ProductController {
 
     @Autowired
@@ -17,9 +22,9 @@ public class ProductController {
 
 
     @PostMapping(value = "/insertProduct")
-    public String insertProduct(@RequestBody Product product){
-        productRepository.save(product);
-        return product.toString();
+    public Product insertProduct(@Valid @RequestBody Product product) {
+        ResponseEntity.ok();
+        return productRepository.save(product);
     }
 
     @GetMapping(value = "/productList")
