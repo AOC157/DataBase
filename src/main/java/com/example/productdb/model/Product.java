@@ -4,6 +4,7 @@ package com.example.productdb.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.*;
 
 @Entity
 public class Product {
@@ -11,9 +12,17 @@ public class Product {
     @GeneratedValue
     @Id
     private int id;
+    @NotNull(message = "name can't be null")
+    @Size(min = 1, max = 200)
     private String name;
+    @NotNull(message = "color cannot be null")
+    @Size(min = 1, max = 200)
     private String color;
+    @NotNull(message = "price cannot be null")
+    @Min(value = 1)
     private double price;
+    @NotNull(message = "date of manufacture cannot be null")
+    @Size(min = 5, max = 200)
     private String date_of_manufacture;
     private String expiration_date;
 
