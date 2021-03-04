@@ -41,10 +41,11 @@ public class ProductController {
     }
 
     @PutMapping(value = "/updateProduct")
-    public void updateProduct(@RequestBody Product product) {
+    public Product updateProduct(@RequestBody Product product) {
         if(productRepository.existsById(product.getId())) {
-            productRepository.save(product);
+            return productRepository.save(product);
         }
+        throw new ObjectNotFoundException("doesn't exist" , Integer.toString(product.getId()));
     }
 
     @DeleteMapping(value = "/deleteProduct/{id}")
