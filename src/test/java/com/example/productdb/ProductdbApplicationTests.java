@@ -115,4 +115,27 @@ class ProductdbApplicationTests {
 
 
     }
+
+    @Test
+    public void updateTest() throws Exception {
+        Product product = new Product("cake" , "black" , 5000.0, "1399.12.11" , "1400.12.11");
+
+        given(productRepository.existsById(product.getId())).willReturn(true);
+        given(productRepository.save(any())).willReturn(product);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonProduct = mapper.writeValueAsString(product);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/updateProduct")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .content(jsonProduct))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Product resultProduct = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Product.class);
+
+        assertEquals(product.getName(), resultProduct.getName());
+
+    }
 }
