@@ -3,6 +3,7 @@ package com.example.productdb;
 import com.example.productdb.controller.ProductController;
 import com.example.productdb.model.Product;
 import com.example.productdb.repository.ProductRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.ObjectNotFoundException;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +24,7 @@ import java.util.List;
 import static javax.management.Query.value;
 import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
@@ -100,5 +104,28 @@ class ProductdbApplicationTests {
             .content(jsonProduct))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name"). value(product.getName()));
+    }
+
+    @Test
+    public void testAddEmployee() throws Exception {
+        Product product = new Product("cake" , "black" , 5000.0, "1399.12.11" , "1400.12.11");
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonProduct = mapper.writeValueAsString(product);
+
+        given(productRepository.save(any())).willReturn(product);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/insertProduct")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .content(jsonProduct))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Product resultProduct = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Product.class);
+
+        assertEquals(product.getName(), resultProduct.getName());
+
+
     }
 }
