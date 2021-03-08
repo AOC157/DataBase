@@ -24,16 +24,16 @@ public class Product {
     private double price;
     @NotNull(message = "date of manufacture cannot be null")
     @Size(min = 5, max = 200)
-    private String date_of_manufacture;
-    private String expiration_date;
+    private String dateOfManufacture;
+    private String expirationDate;
 
 
-    public Product(String name, String color, double price, String date_of_manufacture, String expiration_date) {
+    public Product(String name, String color, double price, String dateOfManufacture, String expirationDate) {
         this.name = name;
         this.color = color;
         this.price = price;
-        this.date_of_manufacture = date_of_manufacture;
-        this.expiration_date = expiration_date;
+        this.dateOfManufacture = dateOfManufacture;
+        this.expirationDate = expirationDate;
     }
 
     public Product(){
@@ -43,20 +43,20 @@ public class Product {
         return id;
     }
 
-    public String getDate_of_manufacture() {
-        return date_of_manufacture;
+    public String getDateOfManufacture() {
+        return dateOfManufacture;
     }
 
-    public void setDate_of_manufacture(String date_of_manufacture) {
-        this.date_of_manufacture = date_of_manufacture;
+    public void setDateOfManufacture(String dateOfManufacture) {
+        this.dateOfManufacture = dateOfManufacture;
     }
 
-    public String getExpiration_date() {
-        return expiration_date;
+    public String getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setExpiration_date(String expiration_date) {
-        this.expiration_date = expiration_date;
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     public String getName() {
@@ -90,8 +90,8 @@ public class Product {
                 ", \"name\":\"" + name + '\"' +
                 ", \"color\":\"" + color + '\"' +
                 ", \"price\":" + price +
-                ", \"date_of_manufacture\":\"" + date_of_manufacture + '\"' +
-                ", \"expiration_date\":\"" + expiration_date + "\"" +
+                ", \"dateOfManufacture\":\"" + dateOfManufacture + '\"' +
+                ", \"expirationDate\":\"" + expirationDate + "\"" +
                 '}';
     }
 
