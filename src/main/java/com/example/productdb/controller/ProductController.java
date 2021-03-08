@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequestMapping("/product")
 @Validated
 public class ProductController {
 
@@ -21,18 +22,17 @@ public class ProductController {
     public ProductRepository productRepository;
 
 
-    @PostMapping(value = "/insertProduct")
+    @PostMapping(value = "/insert")
     public Product insertProduct(@Valid @RequestBody Product product) {
-        ResponseEntity.ok();
         return productRepository.save(product);
     }
 
-    @GetMapping(value = "/productList")
+    @GetMapping(value = "/getAll")
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
-    @GetMapping(value = "/oneProduct/{id}")
+    @GetMapping(value = "/get/{id}")
     public String getOneProduct(@PathVariable("id") int id) {
         if(productRepository.existsById(id)) {
             return productRepository.getOne(id).toString();
@@ -40,7 +40,7 @@ public class ProductController {
         throw new ObjectNotFoundException("doesn't exist" , Integer.toString(id));
     }
 
-    @PutMapping(value = "/updateProduct")
+    @PutMapping(value = "/update")
     public Product updateProduct(@RequestBody Product product) {
         if(productRepository.existsById(product.getId())) {
             return productRepository.save(product);
@@ -48,7 +48,7 @@ public class ProductController {
         throw new ObjectNotFoundException("doesn't exist" , Integer.toString(product.getId()));
     }
 
-    @DeleteMapping(value = "/deleteProduct/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public String deleteProduct(@PathVariable("id") int id) {
         if (productRepository.existsById(id)) {
             String result = productRepository.getOne(id).toString();
