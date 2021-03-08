@@ -60,7 +60,7 @@ class ProductdbApplicationTests {
 
         given(productRepository.findAll()).willReturn(allProducts);
 
-        mockMvc.perform(get("/productList")
+        mockMvc.perform(get("/product/getAll")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(2)))
@@ -74,7 +74,7 @@ class ProductdbApplicationTests {
         given(productRepository.getOne(product.getId())).willReturn(product);
         given(productRepository.existsById(product.getId())).willReturn(true);
 
-        mockMvc.perform(get("/oneProduct/" + product.getId())
+        mockMvc.perform(get("/product/get/" + product.getId())
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name"). value(product.getName()));
@@ -87,7 +87,7 @@ class ProductdbApplicationTests {
         given(productRepository.existsById(product.getId())).willReturn(true);
         given(productRepository.getOne(product.getId())).willReturn(product);
 
-        mockMvc.perform(delete("/deleteProduct/" + product.getId())
+        mockMvc.perform(delete("/product/delete/" + product.getId())
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name"). value(product.getName()));
@@ -102,7 +102,7 @@ class ProductdbApplicationTests {
 
         given(productRepository.save(any())).willReturn(product);
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/insertProduct")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/product/insert")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .content(jsonProduct))
@@ -126,7 +126,7 @@ class ProductdbApplicationTests {
         ObjectMapper mapper = new ObjectMapper();
         String jsonProduct = mapper.writeValueAsString(product);
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/updateProduct")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/product/update")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .content(jsonProduct))
