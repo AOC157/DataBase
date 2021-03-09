@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 @Entity
 public class Product {
@@ -23,12 +26,11 @@ public class Product {
     @Min(value = 1)
     private double price;
     @NotNull(message = "date of manufacture cannot be null")
-    @Size(min = 5, max = 200)
-    private String dateOfManufacture;
-    private String expirationDate;
+    private Date dateOfManufacture;
+    private Date expirationDate;
 
 
-    public Product(String name, String color, double price, String dateOfManufacture, String expirationDate) {
+    public Product(String name, String color, double price, Date dateOfManufacture, Date expirationDate) {
         this.name = name;
         this.color = color;
         this.price = price;
@@ -43,19 +45,19 @@ public class Product {
         return id;
     }
 
-    public String getDateOfManufacture() {
+    public Date getDateOfManufacture() {
         return dateOfManufacture;
     }
 
-    public void setDateOfManufacture(String dateOfManufacture) {
+    public void setDateOfManufacture(Date dateOfManufacture) {
         this.dateOfManufacture = dateOfManufacture;
     }
 
-    public String getExpirationDate() {
+    public Date getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(String expirationDate) {
+    public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
     }
 

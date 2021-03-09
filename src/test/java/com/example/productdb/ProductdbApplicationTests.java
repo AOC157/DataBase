@@ -19,6 +19,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static javax.management.Query.value;
@@ -53,8 +55,12 @@ class ProductdbApplicationTests {
 
     @Test
     public void findAllTest() throws Exception {
-        Product product1 = new Product("cake" , "black" , 5000.0, "1399.12.11" , "1400.12.11");
-        Product product2 = new Product("cookie" , "brown" , 7000.0, "1399.10.00" , "1400.10.00");
+        Product product1 = new Product("cake" , "black" , 5000.0,
+                new GregorianCalendar(2021,Calendar.MARCH,20).getTime()
+                ,new GregorianCalendar(2022, Calendar.MARCH,20).getTime());
+        Product product2 = new Product("cookie" , "brown" , 7000.0,
+                new GregorianCalendar(2021,Calendar.FEBRUARY,15).getTime()
+                ,new GregorianCalendar(2022, Calendar.FEBRUARY,15).getTime());
 
         List<Product> allProducts = Arrays.asList(product1, product2);
 
@@ -69,7 +75,9 @@ class ProductdbApplicationTests {
 
     @Test
     public void getOneTest() throws Exception {
-        Product product = new Product("cake" , "black" , 5000.0, "1399.12.11" , "1400.12.11");
+        Product product = new Product("cake" , "black" , 5000.0,
+                new GregorianCalendar(2021,Calendar.MARCH,20).getTime()
+                ,new GregorianCalendar(2022, Calendar.MARCH,20).getTime());
 
         given(productRepository.getOne(product.getId())).willReturn(product);
         given(productRepository.existsById(product.getId())).willReturn(true);
@@ -77,12 +85,14 @@ class ProductdbApplicationTests {
         mockMvc.perform(get("/product/get/" + product.getId())
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.name"). value(product.getName()));
+            .andExpect(jsonPath("$.dateOfManufacture"). value(product.getDateOfManufacture().toString()));
     }
 
     @Test
     public void deleteTest() throws Exception {
-        Product product = new Product("cake" , "black" , 5000.0, "1399.12.11" , "1400.12.11");
+        Product product = new Product("cake" , "black" , 5000.0,
+                new GregorianCalendar(2021,Calendar.MARCH,20).getTime()
+                ,new GregorianCalendar(2022, Calendar.MARCH,20).getTime());
 
         given(productRepository.existsById(product.getId())).willReturn(true);
         given(productRepository.getOne(product.getId())).willReturn(product);
@@ -95,7 +105,9 @@ class ProductdbApplicationTests {
 
     @Test
     public void insertTest() throws Exception {
-        Product product = new Product("cake" , "black" , 5000.0, "1399.12.11" , "1400.12.11");
+        Product product = new Product("cake" , "black" , 5000.0,
+            new GregorianCalendar(2021,Calendar.MARCH,20).getTime()
+            ,new GregorianCalendar(2022, Calendar.MARCH,20).getTime());
 
         ObjectMapper mapper = new ObjectMapper();
         String jsonProduct = mapper.writeValueAsString(product);
@@ -118,7 +130,9 @@ class ProductdbApplicationTests {
 
     @Test
     public void updateTest() throws Exception {
-        Product product = new Product("cake" , "black" , 5000.0, "1399.12.11" , "1400.12.11");
+        Product product = new Product("cake" , "black" , 5000.0,
+                new GregorianCalendar(2021,Calendar.MARCH,20).getTime()
+                ,new GregorianCalendar(2022, Calendar.MARCH,20).getTime());
 
         given(productRepository.existsById(product.getId())).willReturn(true);
         given(productRepository.save(any())).willReturn(product);
